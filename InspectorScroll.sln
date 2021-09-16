@@ -1,0 +1,21 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InspectorScroll", "InspectorScroll\InspectorScroll.csproj", "{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFA93FA9-4040-46FF-8A1C-2A190C0CC235}
+	EndGlobalSection
+EndGlobal
