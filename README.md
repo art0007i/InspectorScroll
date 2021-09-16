@@ -1,7 +1,7 @@
 # InspectorScroll
 
-A [NeosModLoader](https://github.com/zkxs/NeosModLoader) mod for [Neos VR](https://neos.com/) that allows scrolling inspectors using your thumbstick / touchpad.
-May not work on all controllers, if anything breaks please contact me on discord @ art0007i#2305
+A [NeosModLoader](https://github.com/zkxs/NeosModLoader) mod for [Neos VR](https://neos.com/) that allows scrolling inspectors using your thumbstick / touchpad.<br>
+May not work on all controllers, if anything breaks please contact me on discord @ art0007i#2305<br>
 Tested to work on Oculus Quest 2 controllers.
 
 ## Installation
