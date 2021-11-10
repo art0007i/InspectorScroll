@@ -32,9 +32,10 @@ namespace InspectorScroll
 				IAxisActionReceiver axisActionReceiver = __instance.Laser.CurrentTouchable as IAxisActionReceiver;
 				if (axisActionReceiver != null)
 				{
-					if (((__instance.ActiveToolTip != null && __instance.ActiveToolTip.UsesSecondary) || __instance.InputInterface.GetControllerNode(__instance.Side).GetType() == typeof(IndexController)) && !__instance.InputInterface.ScreenActive)
+					if (((__instance.ActiveToolTip != null && __instance.ActiveToolTip.UsesSecondary && !__instance.World.IsUserspace()) || __instance.InputInterface.GetControllerNode(__instance.Side).GetType() == typeof(IndexController)) && !__instance.InputInterface.ScreenActive)
 					{
 						var val = (AccessTools.Field(__instance.GetType(), "_inputs").GetValue(__instance) as CommonToolInputs).Axis.Value.Value;
+						val *= new BaseX.float2(-1, 1);
 						axisActionReceiver.ProcessAxis(__instance.Laser.TouchSource, val * 120);
 					}
 				}
