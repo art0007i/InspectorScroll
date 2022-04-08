@@ -14,13 +14,18 @@ namespace InspectorScroll
     {
         public override string Name => "InspectorScroll";
         public override string Author => "art0007i";
-        public override string Version => "1.0.1";
+        public override string Version => "1.0.2";
         public override string Link => "https://github.com/art0007i/InspectorScroll/";
+
+		[AutoRegisterConfigKey]
+		public static ModConfigurationKey<float> KEY_SPEED = new ModConfigurationKey<float>("scroll_speed", "How fast you scroll, default is 120.", () => 120);
+		public static ModConfiguration config;
+
         public override void OnEngineInit()
         {
             Harmony harmony = new Harmony("me.art0007i.InspectorScroll");
             harmony.PatchAll();
-
+			config = GetConfiguration();
         }
 
 		[HarmonyPatch(typeof(CommonTool))]
@@ -36,7 +41,7 @@ namespace InspectorScroll
 					{
 						var val = (AccessTools.Field(__instance.GetType(), "_inputs").GetValue(__instance) as CommonToolInputs).Axis.Value.Value;
 						val *= new BaseX.float2(-1, 1);
-						axisActionReceiver.ProcessAxis(__instance.Laser.TouchSource, val * 120);
+						axisActionReceiver.ProcessAxis(__instance.Laser.TouchSource, val * config.GetValue(KEY_SPEED));
 					}
 				}
 			}
