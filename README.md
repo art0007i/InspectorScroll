@@ -1,8 +1,10 @@
 # InspectorScroll
 
 A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that allows scrolling inspectors (and other ui panels) using your thumbstick / touchpad.<br>
-May not work on all controllers, if anything breaks please contact me on discord @ art0007i#2305<br>
+
 Tested to work on Oculus Quest 2 controllers.
+
+This is a workaround for [#149](https://github.com/Yellow-Dog-Man/Resonite-Issues/issues/149)
 
 ## Installation
 1. Install [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader).
