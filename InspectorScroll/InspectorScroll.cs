@@ -8,7 +8,7 @@ namespace InspectorScroll
     {
         public override string Name => "InspectorScroll";
         public override string Author => "art0007i";
-        public override string Version => "2.0.0";
+        public override string Version => "2.1.0";
         public override string Link => "https://github.com/art0007i/InspectorScroll/";
 
 		[AutoRegisterConfigKey]
