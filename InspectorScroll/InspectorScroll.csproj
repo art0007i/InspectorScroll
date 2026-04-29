@@ -6,7 +6,7 @@
     <RootNamespace>InspectorScroll</RootNamespace>
     <AssemblyTitle>InspectorScroll</AssemblyTitle>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <GamePath>$(MSBuildThisFileDirectory)Resonite</GamePath>
@@ -17,6 +17,7 @@
     <CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
     <DebugSymbols Condition="'$(Configuration)'=='Release'">false</DebugSymbols>
     <DebugType Condition="'$(Configuration)'=='Release'">None</DebugType>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,10 +26,13 @@
       <HintPath Condition="Exists('$(GamePath)0Harmony.dll')">$(GamePath)0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Elements.Core">
-      <HintPath>$(GamePath)Resonite_Data\Managed\Elements.Core.dll</HintPath>
+      <HintPath>$(GamePath)Elements.Core.dll</HintPath>
     </Reference>
     <Reference Include="FrooxEngine">
-      <HintPath>$(GamePath)Resonite_Data\Managed\FrooxEngine.dll</HintPath>
+      <HintPath>$(GamePath)FrooxEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Renderite.Shared">
+      <HintPath>$(GamePath)Renderite.Shared.dll</HintPath>
     </Reference>
     <Reference Include="ResoniteModLoader">
       <HintPath>$(GamePath)ResoniteModLoader.dll</HintPath>
