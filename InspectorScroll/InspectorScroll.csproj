@@ -1,14 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{FFA93FA9-4040-46FF-8A1C-2A190C0CC235}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InspectorScroll</RootNamespace>
     <AssemblyTitle>InspectorScroll</AssemblyTitle>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net10.0</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
     <GamePath>$(MSBuildThisFileDirectory)Resonite</GamePath>
     <GamePath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Resonite\')">C:\Program Files (x86)\Steam\steamapps\common\Resonite\</GamePath>
     <GamePath Condition="Exists('$(HOME)/.steam/steam/steamapps/common/Resonite/')">$(HOME)/.steam/steam/steamapps/common/Resonite/</GamePath>
@@ -21,10 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="HarmonyLib">
-      <HintPath>$(GamePath)rml_libs\0Harmony.dll</HintPath>
-      <HintPath Condition="Exists('$(GamePath)0Harmony.dll')">$(GamePath)0Harmony.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
+    <PackageReference Include="ResoniteModLoader" Version="5.0.1" />
     <Reference Include="Elements.Core">
       <HintPath>$(GamePath)Elements.Core.dll</HintPath>
     </Reference>
@@ -33,10 +26,6 @@
     </Reference>
     <Reference Include="Renderite.Shared">
       <HintPath>$(GamePath)Renderite.Shared.dll</HintPath>
-    </Reference>
-    <Reference Include="ResoniteModLoader">
-      <HintPath>$(GamePath)ResoniteModLoader.dll</HintPath>
-      <HintPath>$(GamePath)Libraries\ResoniteModLoader.dll</HintPath>
     </Reference>
   </ItemGroup>
 
