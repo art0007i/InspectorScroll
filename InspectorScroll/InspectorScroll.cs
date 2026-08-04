@@ -11,39 +11,39 @@ public class InspectorScroll : ResoniteMod
 {
 	public override string Name => "InspectorScroll";
 	public override string Author => "art0007i";
-	public override string Version => "2.0.2";
+	public override string Version => "2.0.3";
 	public override string Link => "https://github.com/art0007i/InspectorScroll/";
 
 	[AutoRegisterConfigKey]
-	public static ModConfigurationKey<float> KEY_SPEED = new("scroll_speed", "How fast you scroll, default is 120.", () => 120);
+	public static ModConfigurationKey<bool> ScrollWhileWalking = new("scroll_while_walking", "Always allows scrolling, even if it means you'd walk and scroll at the same time.", () => false);
 	[AutoRegisterConfigKey]
-	public static ModConfigurationKey<bool> KEY_INDEX_JOYSTICK = new("index_joystick", "Use the joystick on index controller.", () => false);
+	public static ModConfigurationKey<float> Speed = new("scroll_speed", "How fast you scroll, default is 120.", () => 120);
 	[AutoRegisterConfigKey]
-	public static ModConfigurationKey<bool> KEY_BLOCK_INPUT_WORLD = new("block_input_world", "Prevent moving when hovering over a scrollable element in world space.", () => false);
+	public static ModConfigurationKey<bool> IndexJoystick = new("index_joystick", "Use the joystick on index controller.", () => false);
 	[AutoRegisterConfigKey]
-	public static ModConfigurationKey<bool> KEY_BLOCK_INPUT_USER = new("block_input_user", "Prevent moving when hovering over a scrollable element in userspace.", () => false);
-	public static ModConfiguration config;
+	public static ModConfigurationKey<bool> BlockInputWorld = new("block_input_world", "Prevent moving when hovering over a scrollable element in world space.", () => false);
+	[AutoRegisterConfigKey]
+	public static ModConfigurationKey<bool> BlockInputUser = new("block_input_user", "Prevent moving when hovering over a scrollable element in userspace.", () => false);
 
 	public override void OnEngineInit()
 	{
 		Harmony harmony = new Harmony("me.art0007i.InspectorScroll");
 		harmony.PatchAll();
-		config = GetConfiguration();
 	}
 
-	[HarmonyPatch(typeof(InteractionHandler))]
+	 [HarmonyPatch(typeof(InteractionHandler))]
 	[HarmonyPatch("OnInputUpdate")]
 	class InteractionHandler_OnInputUpdate_Patch
 	{
 		public static void Postfix(InteractionHandler __instance)
 		{
 			if (__instance.InputInterface.ScreenActive) return;
-				
-			if (__instance.Inputs.Axis.RegisterBlocks)
+
+			var index = __instance.InputInterface.GetControllerNode(__instance.Side) as IndexController;
+			if (ScrollWhileWalking.Value || (index != null && !IndexJoystick.Value) || __instance.Inputs.Axis.RegisterBlocks)
 			{
 				float2 val;
-				if (config.GetValue(KEY_INDEX_JOYSTICK) && 
-				    __instance.InputInterface.GetControllerNode(__instance.Side) is IndexController index)
+				if (index != null && IndexJoystick.Value)
 				{
 					val = index.Joystick.Value;
 				}
@@ -54,17 +54,14 @@ public class InspectorScroll : ResoniteMod
 				val *= new float2(-1, 1);
 				
 				IAxisActionReceiver? axisActionReceiver = __instance.Laser.CurrentTouchable as IAxisActionReceiver;
-				axisActionReceiver?.ProcessAxis(__instance.Laser.TouchSource, val * config.GetValue(KEY_SPEED));
+				axisActionReceiver?.ProcessAxis(__instance.Laser.TouchSource, val * Speed.Value);
 			}
 		}
 	}
 	
-	private static readonly FieldInfo InteractionHandlerInputs =
-		AccessTools.Field(typeof(InteractionHandler), "_inputs");
-
 	static bool ShouldAttemptInputBlock()
 	{
-		return config.GetValue(KEY_BLOCK_INPUT_WORLD) || config.GetValue(KEY_BLOCK_INPUT_USER);
+		return BlockInputWorld.Value || BlockInputUser.Value;
 	}
 	
 	static bool CanScroll(InteractionHandler? __instance)
@@ -84,8 +81,8 @@ public class InspectorScroll : ResoniteMod
 	[HarmonyAfter("U-xyla.XyMod", "owo.Nytra.NoTankControls")]
 	class InputBlockPatch
 	{
-		static InteractionHandler? userSpaceHandlerLeft = null;
-		static InteractionHandler? userSpaceHandlerRight = null;
+		static InteractionHandler? userSpaceHandlerLeft;
+		static InteractionHandler? userSpaceHandlerRight;
 		
 		// some code from Nytra's [NoTankControls fork](https://github.com/Nytra/NoTankControls)
 		private static void Postfix(InteractionHandler __instance)
@@ -94,16 +91,20 @@ public class InspectorScroll : ResoniteMod
 			
 			if (__instance.World == Engine.Current.WorldManager.FocusedWorld)
 			{
-				var worldScroll = config.GetValue(KEY_BLOCK_INPUT_WORLD) && CanScroll(__instance);
+				var worldScroll = BlockInputWorld.Value && CanScroll(__instance);
 				var userScroll = (__instance.Side == Chirality.Left && CanScroll(userSpaceHandlerLeft))
 				                  || (__instance.Side == Chirality.Right && CanScroll(userSpaceHandlerRight));
-				if (worldScroll || (config.GetValue(KEY_BLOCK_INPUT_USER) && userScroll))
+				if (worldScroll || BlockInputUser.Value && userScroll)
 				{
 					__instance.Inputs.Axis.RegisterBlocks = true;
 				}
 			}
 			else if (__instance.World == Userspace.UserspaceWorld)
 			{
+				// Required for NoTankControls+InspectorScroll
+				if(BlockInputUser.Value)
+					__instance.Inputs.Axis.RegisterBlocks = true;
+				
 				if (__instance.Side == Chirality.Left)
 				{
 					if (userSpaceHandlerLeft.FilterWorldElement() == null)
