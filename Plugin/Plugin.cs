@@ -90,7 +90,7 @@ public class Plugin : BasePlugin
 		static InteractionHandler? userSpaceHandlerRight;
 		
 		// some code from Nytra's [NoTankControls fork](https://github.com/Nytra/NoTankControls)
-		private static void Postfix(InteractionHandler __instance)
+		private static void Postfix(InteractionHandler __instance, ref CommonActionsInputs ____laserHoldInputs)
 		{
 			if (!ShouldAttemptInputBlock()) return;
 			
@@ -101,7 +101,9 @@ public class Plugin : BasePlugin
 				                  || (__instance.Side == Chirality.Right && CanScroll(userSpaceHandlerRight));
 				if (worldScroll || BlockInputUser.Value && userScroll)
 				{
-					__instance.Inputs.Axis.RegisterBlocks = true;
+                                  var index = __instance.InputInterface.GetControllerNode(__instance.Side) as IndexController;
+                                  if (index == null || IndexJoystick.Value)
+                                        ____laserHoldInputs.Active = true;
 				}
 			}
 			else if (__instance.World == Userspace.UserspaceWorld)
